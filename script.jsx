@@ -3,6 +3,7 @@ const {useState} = React;
 const App = () => {
     const [breakValue, setBreak] = useState(5);
     const [SessionValue, setSession] = useState(25);
+    
 
     return (
         <div id="container">
@@ -15,7 +16,9 @@ const App = () => {
 }
 const Break = ({breakValue,setBreak}) => {
     const increment = () => {
+        if(breakValue < 60){
         setBreak(breakValue + 1);
+        }
     }
     const decrement = () => {
         if(breakValue > 1){
@@ -34,7 +37,9 @@ const Break = ({breakValue,setBreak}) => {
 
 const Session = ({SessionValue,setSession}) => {
     const increment = () => {
+        if(SessionValue < 60){
         setSession(SessionValue + 1);
+        }
     }
     const decrement = () => {
         if(SessionValue > 1){
