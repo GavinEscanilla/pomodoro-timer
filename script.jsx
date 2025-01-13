@@ -61,6 +61,7 @@ const Timer = ({ breakValue, sessionValue, setBreak, setSession }) => {
     const [timeLeft, setTimeLeft] = useState(sessionValue * 60);
     const [isSession, setIsSession] = useState(true);
     const isSessionRef = useRef(isSession);
+    const audioRef = useRef(null);
     useEffect(() => {
         isSessionRef.current = isSession;
     },[isSession]);
@@ -75,6 +76,9 @@ const Timer = ({ breakValue, sessionValue, setBreak, setSession }) => {
         const timer = setInterval(() => {
             setTimeLeft((prev) => {
                 if (prev <= 0) {
+                    if(audioRef.current){
+                        audioRef.current.play(); 
+                    }
                     setIsSession((prevstate) => !prevstate);  
                     
                     return (!isSessionRef.current ? sessionValue : breakValue) * 60; 
@@ -92,6 +96,10 @@ const Timer = ({ breakValue, sessionValue, setBreak, setSession }) => {
         setTimeLeft(25 * 60); 
         setIsSession(true); 
         setIsRunning(false);
+        if(audioRef.current){
+            audioRef.current.pause(); 
+            audioRef.current.currentTime = 0; 
+        }
     };
 
     const startnstop = () => {
@@ -110,6 +118,9 @@ const Timer = ({ breakValue, sessionValue, setBreak, setSession }) => {
             <h2 id="time-left">{formatTime(timeLeft)}</h2>
             <button id="start_stop" onClick={startnstop}>{isRunning ? "Stop" : "Start"}</button>
             <button id="reset" onClick={reset}>Reset</button>
+            <audio id="beep" ref={audioRef}>
+                <source src="https://raw.githubusercontent.com/freeCodeCamp/cdn/master/build/testable-projects-fcc/audio/BeepSound.wav" type="audio/mpeg" />
+            </audio>
         </div>
     );
 };
